@@ -5,3 +5,5 @@ src/css/
 src/index.html
 src/js/config.js
 src/js/views.js
+.tmp/
+dist/

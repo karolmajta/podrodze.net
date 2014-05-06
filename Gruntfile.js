@@ -1,7 +1,11 @@
 module.exports = function(grunt) {
 
     var REQUIRED_ENVVARS = [
-        'GOOGLE_API_KEY'
+        'GOOGLE_API_KEY',
+        'AWS_ACCESS_KEY_ID',
+        'AWS_SECRET_ACCESS_KEY',
+        'AWS_S3_BUCKET',
+        'AWS_S3_REGION'
     ];
 
     var missingKeys = function (obj, keys) {
@@ -31,7 +35,7 @@ module.exports = function(grunt) {
             all: ['Gruntfile.js', 'src/js/*.js']
         },
         'http-server': {
-            'dev': {
+            dev: {
                 root: "src/",
                 port: 8282,
                 host: "127.0.0.1",
@@ -40,6 +44,16 @@ module.exports = function(grunt) {
                 autoIndex: true,
                 defaultExt: "html",
                 runInBackground: true
+            },
+            prod: {
+                root: "dist/",
+                port: 8282,
+                host: "127.0.0.1",
+                cache: 0,
+                showDir : true,
+                autoIndex: true,
+                defaultExt: "html",
+                runInBackground: false
             }
         },
         render: {
@@ -94,6 +108,10 @@ module.exports = function(grunt) {
             'bootstrap-variables': {
                 src: 'src/less/bootstrap-variables.less',
                 dest: 'src/libs/bootstrap/less/variables.less'
+            },
+            index: {
+                src: 'src/index.html',
+                dest: 'dist/index.html'
             }
         },
         less: {
@@ -108,6 +126,62 @@ module.exports = function(grunt) {
                     "src/css/podrodze.css": "src/less/podrodze.less"
                 }
             }
+        },
+        useminPrepare: {
+            html: 'src/index.html',
+            options: {
+                root: 'src',
+                dest: 'dist'
+            }
+        },
+        usemin: {
+            html: 'dist/index.html'
+        },
+        s3: {
+            options: {
+                key: process.env.AWS_ACCESS_KEY_ID,
+                secret: process.env.AWS_SECRET_ACCESS_KEY,
+                bucket: process.env.AWS_S3_BUCKET,
+                region: process.env.AWS_S3_REGION,
+                access: 'public-read'
+            },
+            // upload
+            index: {
+                options: {
+                    headers: {
+                        // Never cache the index!
+                        "Cache-Control": "no-cache, no-store, must-revalidate",
+                        "Pragma": "no-cache",
+                        "Expires": 0
+                    }
+                },
+                upload: [
+                    {
+                        src: 'dist/index.html',
+                        dest: 'index.html'
+                    }
+                ]
+            },
+            // upload the new version of app
+            app: {
+                options: {
+                    headers: {
+                        // Cache virtually forever (2 years)
+                        "Cache-Control": "max-age=630720000, public",
+                        "Expires": new Date(Date.now() + 63072000000).toUTCString()
+                    }
+                },
+                upload: [
+                    {
+                        src: 'dist/<%= pkg.version %>/js/*',
+                        dest: '<%= pkg.version %>/js/'
+                    },
+                    {
+                        src: 'dist/<%= pkg.version %>/css/*',
+                        dest: '<%= pkg.version %>/css/'
+                    }
+                ]
+            }
         }
     });
 
@@ -119,6 +193,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-usemin');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-s3');
 
     var buildTasks = [
         'render',
@@ -134,5 +213,11 @@ module.exports = function(grunt) {
     }
 
     grunt.registerTask('build', buildTasks);
+    grunt.registerTask('dist', [
+        'useminPrepare',
+        'concat:generated', 'cssmin:generated', 'uglify:generated',
+        'copy:index',
+        'usemin']);
+    grunt.registerTask('deploy', ['s3:index', 's3:app']);
     grunt.registerTask('default', ['http-server:dev', 'watch:source']);
 };
