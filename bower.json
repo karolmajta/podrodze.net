@@ -1,0 +1,23 @@
+{
+  "name": "podrodze-webapp",
+  "version": "0.0.0",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16",
+    "bootstrap": "~3.1.1",
+    "angular-google-maps": "~1.0.18",
+    "underscore": "~1.6.0",
+    "jquery": "~2.1.1",
+    "angular-resource": "~1.2.16"
+  },
+  "resolutions": {
+    "underscore": "~1.5.x"
+  }
+}

@@ -1,0 +1,22 @@
+<h1>PoDrodze.net</h1>
+<h2>Jedziesz gdzieś? Znajdź ciekawe miejsca po drodze!</h2>
+<hr>
+<form role="form">
+  <div class="form-group">
+    <label for="start">Początek podróży</label>
+    <input type="text" class="form-control" id="start" placeholder="Początek podróży"
+           name="start"
+           ng-model="searchParams.start"
+           ng-change="triggerAutocomplete('start')">
+    <div>
+      <ul>
+        <li ng-repeat="suggestion in suggested.start">
+          <a href ng-click="toggleActive(suggestion, 'start')">
+            {{ suggestion.description }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>

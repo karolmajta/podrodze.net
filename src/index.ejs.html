@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="podrodze">
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PoDrodze.net</title>
+
+  <link type="text/css" rel="stylesheet" href="libs/bootstrap/css/bootstrap.css">
+  <link type="text/css" rel="stylesheet" href="libs/bootstrap/css/bootstrap-theme.css">
+
+  <link type="text/css" rel="stylesheet" href="css/podrodze.css">
+
+  <script type="text/javascript" rel="script"
+          src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= data.keys.GOOGLE_API_KEY %>&sensor=false">
+  </script>
+
+  <script type="text/javascript" rel="script" src="libs/underscore/underscore.js"></script>
+  <script type="text/javascript" rel="script" src="libs/jquery/dist/jquery.js"></script>
+
+  <script type="text/javascript" rel="script" src="libs/angular/angular.js"></script>
+  <script type="text/javascript" rel="script" src="libs/angular-resource/angular-resource.js"></script>
+  <script type="text/javascript" rel="script"
+          src="libs/angular-google-maps/dist/angular-google-maps.js">
+  </script>
+
+  <script type="text/javascript" rel="script" src="js/main.js"></script>
+  <script type="text/javascript" rel="script" src="js/config.js"></script>
+  <script type="text/javascript" rel="script" src="js/views.js"></script>
+  <script type="text/javascript" rel="script" src="js/utils.js"></script>
+
+  <script type="text/javascript" rel="script" src="js/places/init.js"></script>
+  <script type="text/javascript" rel="script" src="js/places/directions.js"></script>
+  <script type="text/javascript" rel="script" src="js/places/autocomplete.js"></script>
+</head>
+<body>
+<div class="pd-page container-fluid">
+  <div class="pd-container row" ng-controller="appController">
+    <div class="pd-map col-sm-7">
+      <ng-include src="'views/map.html'" ng-controller="mapController"></ng-include>
+    </div>
+    <div class="pd-ui col-sm-5">
+      <ng-include src="'views/ui.html'" ng-controller="uiController"></ng-include>
+    </div>
+  </div>
+</div>
+</body>
+</html>
