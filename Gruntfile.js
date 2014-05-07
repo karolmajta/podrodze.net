@@ -1,7 +1,10 @@
 module.exports = function(grunt) {
 
-    var REQUIRED_ENVVARS = [
+    var REQUIRED_BUILD_ENVVARS = [
         'GOOGLE_API_KEY',
+    ];
+
+    var REQUIRED_DEPLOY_ENVVARS = [
         'AWS_ACCESS_KEY_ID',
         'AWS_SECRET_ACCESS_KEY',
         'AWS_S3_BUCKET',
@@ -18,8 +21,13 @@ module.exports = function(grunt) {
         return missingKeys;
     };
 
-    var environmentValid = function () {
-        var missing = missingKeys(process.env, REQUIRED_ENVVARS);
+    var buildEnvironmentValid = function () {
+        var missing = missingKeys(process.env, REQUIRED_BUILD_ENVVARS);
+        return missing.length === 0;
+    };
+
+    var deployEnvironmentValid = function () {
+        var missing = missingKeys(process.env, REQUIRED_DEPLOY_ENVVARS);
         return missing.length === 0;
     };
 
@@ -28,7 +36,7 @@ module.exports = function(grunt) {
         watch: {
             source: {
                 files: ['Gruntfile.js', 'src/**/*.js', 'src/**/*.html', 'src/**/*.less'],
-                tasks: ['jshint:all', 'build']
+                tasks: ['jshint:all', 'clean', 'build']
             }
         },
         jshint: {
@@ -182,7 +190,15 @@ module.exports = function(grunt) {
                     }
                 ]
             }
-        }
+        },
+        clean: [
+            '.tmp/',
+            'dist/',
+            'src/libs/',
+            'src/css/',
+            'src/js/config.js',
+            'src/js/views.js'
+        ]
     });
 
     grunt.loadNpmTasks('grunt-fail');
@@ -198,6 +214,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-s3');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     var buildTasks = [
         'render',
@@ -206,8 +223,8 @@ module.exports = function(grunt) {
         'less:bootstrap', 'less:source'
     ];
 
-    if (!environmentValid()) {
-        var errmsg = "Missing envvars [" + missingKeys(process.env, REQUIRED_ENVVARS) + "].";
+    if (!buildEnvironmentValid()) {
+        var errmsg = "Missing envvars [" + missingKeys(process.env, REQUIRED_BUILD_ENVVARS) + "].";
         var failmsg = "fail:" + errmsg + ":7";
         buildTasks.unshift(failmsg);
     }
@@ -218,6 +235,14 @@ module.exports = function(grunt) {
         'concat:generated', 'cssmin:generated', 'uglify:generated',
         'copy:index',
         'usemin']);
-    grunt.registerTask('deploy', ['s3:index', 's3:app']);
+
+    var deployTasks = ['clean', 'build', 'dist', 's3:index', 's3:app'];
+    if (!deployEnvironmentValid()) {
+        var errmsg = "Missing envvars [" + missingKeys(process.env, REQUIRED_DEPLOY_ENVVARS) + "].";
+        var failmsg = "fail:" + errmsg + ":7";
+        deployTasks.unshift(failmsg);
+    }
+
+    grunt.registerTask('deploy', deployTasks);
     grunt.registerTask('default', ['http-server:dev', 'watch:source']);
 };
