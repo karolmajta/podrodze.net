@@ -1,22 +1,49 @@
 <h1>PoDrodze.net</h1>
 <h2>Jedziesz gdzieś? Znajdź ciekawe miejsca po drodze!</h2>
+
 <hr>
-<form role="form">
+
+<form role="form" name="startStopForm" ng-controller="startStopFormController">
+
   <div class="form-group">
     <label for="start">Początek podróży</label>
     <input type="text" class="form-control" id="start" placeholder="Początek podróży"
            name="start"
            ng-model="searchParams.start"
-           ng-change="triggerAutocomplete('start')">
-    <div>
+           ng-change="onFieldChange('start')"
+           required>
+    <div ng-show="showSuggestion.start">
+      [<a href ng-click="hideSuggested('start')">x</a>]
       <ul>
         <li ng-repeat="suggestion in suggested.start">
-          <a href ng-click="toggleActive(suggestion, 'start')">
+          <a href ng-click="select(suggestion, 'start')">
             {{ suggestion.description }}
           </a>
         </li>
       </ul>
     </div>
   </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+
+  <div class="form-group">
+    <label for="start">Początek podróży</label>
+    <input type="text" class="form-control" id="stop" placeholder="Koniec podróży"
+           name="stop"
+           ng-model="searchParams.stop"
+           ng-change="onFieldChange('stop')"
+           required>
+    <div ng-show="showSuggestion.stop">
+      [<a href ng-click="hideSuggested('stop')">x</a>]
+      <ul>
+        <li ng-repeat="suggestion in suggested.stop">
+          <a href ng-click="select(suggestion, 'stop')">
+            {{ suggestion.description }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-default"
+          ng-disabled="startStopForm.$invalid">Submit</button>
+
 </form>

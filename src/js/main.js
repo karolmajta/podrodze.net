@@ -20,29 +20,60 @@ angular.module('podrodze', [
 
 }])
 
-.controller('uiController',
-    ['$scope', 'ThrottledAutocompleteSuggestions', 'getIn',
+.controller('uiController', ['$scope', function ($scope) {
+
+        $scope.selected = {
+            start: null,
+            stop: null
+        };
+
+        $scope.searchParams = {};
+
+}])
+
+.controller('startStopFormController', ['$scope', 'ThrottledAutocompleteSuggestions', 'getIn',
     function ($scope, Autocomplete, getIn) {
 
-    var autocomplete = new Autocomplete(400);
+        var autocomplete = new Autocomplete(400);
 
-    $scope.searchParams = {};
+        $scope.showSuggestion = {
+            start: false,
+            stop: false
+        };
 
-    $scope.suggested = {
-        start: [],
-        stop: []
-    };
+        $scope.suggested = {
+            start: [],
+            stop: []
+        };
 
-    $scope.triggerAutocomplete = function (fieldname) {
-        autocomplete.query($scope.searchParams.start).then(function (r) {
-            $scope.suggested[fieldname] = r;
-        });
-    };
+        var triggerAutocomplete = function (fieldname) {
+            var dirtyTerm = $scope.searchParams[fieldname];
+            var term = (dirtyTerm  === null) || (dirtyTerm === undefined) ? "" : dirtyTerm;
+            autocomplete.query(term).then(function (r) {
+                $scope.suggested[fieldname] = r;
+                if (r.length > 0) {
+                    $scope.showSuggestion[fieldname] = true;
+                } else {
+                    $scope.hideSuggested(fieldname);
+                }
+            });
+        };
 
-    $scope.toggleActive = function (suggestion, fieldname) {
-        $scope.searchParams[fieldname] = suggestion.description;
-    };
-}])
+        $scope.onFieldChange = function (fieldname) {
+            $scope.selected[fieldname] = null;
+            triggerAutocomplete(fieldname);
+        };
+
+        $scope.hideSuggested = function (fieldname) {
+            $scope.showSuggestion[fieldname] = false;
+        };
+
+        $scope.select = function (suggestion, fieldname) {
+            $scope.selected[fieldname] = suggestion;
+            $scope.searchParams[fieldname] = suggestion.description;
+            $scope.hideSuggested(fieldname);
+        };
+    }])
 
 .controller('mapController', ['$scope', function ($scope) {
 

@@ -10,7 +10,8 @@ angular.module('podrodze.places.autocomplete', ['$googlePlacesLibrary'])
     this.query = function (str) {
         var d = $q.defer();
         autocomplete.getQueryPredictions({input: str}, function (res) {
-            d.resolve(res);
+            d.resolve(res === null ? [] : res); // defensive, it seems AutocompleteService
+                                                // sometimes returns nulls
         });
         return d.promise;
     }
@@ -30,7 +31,7 @@ angular.module('podrodze.places.autocomplete', ['$googlePlacesLibrary'])
             }
             $timeout.cancel(pendingRequest);
             var d = $q.defer();
-            if(str !== "") {
+            if(str) {
                 pendingRequest = $timeout(function () {
                     var p = AutocompleteSuggestions.query(str);
                     pendingResponse = p;

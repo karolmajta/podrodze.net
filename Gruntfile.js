@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
     var REQUIRED_BUILD_ENVVARS = [
-        'GOOGLE_API_KEY',
+        'GOOGLE_API_KEY'
     ];
 
     var REQUIRED_DEPLOY_ENVVARS = [
@@ -216,6 +216,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-s3');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
+    var errmsg, failmsg;
+
     var buildTasks = [
         'render',
         'html2js',
@@ -224,8 +226,8 @@ module.exports = function(grunt) {
     ];
 
     if (!buildEnvironmentValid()) {
-        var errmsg = "Missing envvars [" + missingKeys(process.env, REQUIRED_BUILD_ENVVARS) + "].";
-        var failmsg = "fail:" + errmsg + ":7";
+        errmsg = "Missing envvars [" + missingKeys(process.env, REQUIRED_BUILD_ENVVARS) + "].";
+        failmsg = "fail:" + errmsg + ":7";
         buildTasks.unshift(failmsg);
     }
 
@@ -238,8 +240,8 @@ module.exports = function(grunt) {
 
     var deployTasks = ['clean', 'build', 'dist', 's3:index', 's3:app'];
     if (!deployEnvironmentValid()) {
-        var errmsg = "Missing envvars [" + missingKeys(process.env, REQUIRED_DEPLOY_ENVVARS) + "].";
-        var failmsg = "fail:" + errmsg + ":7";
+        errmsg = "Missing envvars [" + missingKeys(process.env, REQUIRED_DEPLOY_ENVVARS) + "].";
+        failmsg = "fail:" + errmsg + ":7";
         deployTasks.unshift(failmsg);
     }
 
