@@ -30,17 +30,21 @@ angular.module('podrodze.places.autocomplete', ['$googlePlacesLibrary'])
             }
             $timeout.cancel(pendingRequest);
             var d = $q.defer();
-            pendingRequest = $timeout(function () {
-                var p = AutocompleteSuggestions.query(str);
-                pendingResponse = p;
-                p.then(function (res) {
-                    if (pendingResponse === p) {
-                        d.resolve(res);
-                    } else {
-                        d.reject(res);
-                    }
-                });
-            }, millis);
+            if(str !== "") {
+                pendingRequest = $timeout(function () {
+                    var p = AutocompleteSuggestions.query(str);
+                    pendingResponse = p;
+                    p.then(function (res) {
+                        if (pendingResponse === p) {
+                            d.resolve(res);
+                        } else {
+                            d.reject(res);
+                        }
+                    });
+                }, millis);
+            } else {
+                d.resolve([]);
+            }
             return d.promise;
         }
     }

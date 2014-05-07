@@ -34,7 +34,6 @@ angular.module('podrodze', [
     };
 
     $scope.triggerAutocomplete = function (fieldname) {
-        if (!$scope.searchParams.start) { return; }
         autocomplete.query($scope.searchParams.start).then(function (r) {
             $scope.suggested[fieldname] = r;
         });
