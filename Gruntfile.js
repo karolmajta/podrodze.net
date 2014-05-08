@@ -100,7 +100,8 @@ module.exports = function(grunt) {
                          'angular/**',
                          'angular-route/**',
                          'angular-resource/**',
-                         'angular-google-maps/**'
+                         'angular-google-maps/**',
+                         'angular-anydialog/**'
                      ],
                      dest: 'src/libs/'}
                 ]
@@ -109,7 +110,11 @@ module.exports = function(grunt) {
                 files: [
                     {expand: true,
                      cwd: 'bower_components/bootstrap',
-                     src: ['fonts/**', 'js/**', 'less/**'],
+                     src: ['fonts/**', 'less/**'],
+                     dest: 'src/libs/bootstrap/'},
+                    {expand: true,
+                     cwd: 'bower_components/bootstrap/dist/',
+                     src: ['js/bootstrap.js'],
                      dest: 'src/libs/bootstrap/'}
                 ]
             },

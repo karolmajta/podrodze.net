@@ -3,14 +3,16 @@
 
 <hr>
 
-<form role="form" name="startStopForm" ng-controller="startStopFormController">
+<form role="form" name="startStopForm" ng-controller="startStopFormController" ng-submit="findRoute()">
 
   <div class="form-group">
     <label for="start">Początek podróży</label>
     <input type="text" class="form-control" id="start" placeholder="Początek podróży"
            name="start"
+           tabindex="1"
            ng-model="searchParams.start"
            ng-change="onFieldChange('start')"
+           ng-focus="hideSuggested('stop')"
            required>
     <div ng-show="showSuggestion.start">
       [<a href ng-click="hideSuggested('start')">x</a>]
@@ -25,11 +27,13 @@
   </div>
 
   <div class="form-group">
-    <label for="start">Początek podróży</label>
+    <label for="start">Koniec podróży</label>
     <input type="text" class="form-control" id="stop" placeholder="Koniec podróży"
            name="stop"
+           tabindex="1"
            ng-model="searchParams.stop"
            ng-change="onFieldChange('stop')"
+           ng-focus="hideSuggested('start')"
            required>
     <div ng-show="showSuggestion.stop">
       [<a href ng-click="hideSuggested('stop')">x</a>]
@@ -43,7 +47,13 @@
     </div>
   </div>
 
-  <button type="submit" class="btn btn-default"
-          ng-disabled="startStopForm.$invalid">Submit</button>
+  <button type="submit" tabindex="1" class="btn btn-default"
+          ng-disabled="startStopForm.$invalid"
+          ng-focus="hideSuggested('start'); hideSuggested('stop');">Submit</button>
 
 </form>
+
+<modal name="directionSearchModal"
+       template-url="'views/direction-search-modal.html'"
+       adapter="bootstrapAdapter"
+       controlled-by="directionSearchModalController"></modal>
