@@ -20,6 +20,7 @@ angular.module('podrodze', [
     };
 
     $rootScope.cachedMainPathQueryResult = null;
+    $rootScope.cachedResults = null;
 
     $rootScope.mainRoute = {
         path: []
@@ -30,8 +31,12 @@ angular.module('podrodze', [
 .controller('uiController', ['$scope', function ($scope) {
     $scope.searchboxes = true;
     $scope.queryboxes = $scope.mainRoute.path.length > 0;
+    $scope.results = Boolean($scope.cachedResults);
     $scope.$watch('cachedMainPathQueryResult', function (is, was) {
         if (is) { $scope.queryboxes = true; }
+    });
+    $scope.$watch('cachedResults', function (is, was) {
+        if (is) { $scope.results = Boolean($scope.cachedResults); }
     });
 }])
 
@@ -207,7 +212,8 @@ function ($scope, $timeout, Autocomplete) {
 
 }])
 
-.controller('selectVenuesFormController', ['$scope', function ($scope) {
+.controller('selectVenuesFormController',
+    ['$rootScope', '$scope', function ($rootScope, $scope) {
 
     $scope.venues = {
         parks: true,
@@ -222,7 +228,7 @@ function ($scope, $timeout, Autocomplete) {
             distance: $scope.mainRoute.distance,
             keyword: $scope.keyword
         }).result.then(function (res) {
-            console.log(res);
+            $rootScope.cachedResults = _.values(res.places);
         });
     };
 
@@ -292,43 +298,6 @@ function ($scope, $timeout, Autocomplete) {
             $scope.$modal.hide({places: res});
         });
     });
-
-//    var onPlaceFetch = function (res) {
-//        if(res && res.length > 0) {
-//            results.push(res);
-//        }
-//        currentIndex++;
-//        currPoint = points[currentIndex];
-//
-//        if(!currPoint) {
-//            console.log(results);
-//            return $q.when([]);
-//        }
-//
-//
-//
-//        if (dist < mindist) {
-//            $q.when([]).then(onPlaceFetch);
-//        }
-//        if (points[currentIndex]) {
-//            anchorPoint = currPoint;
-//            var i = currentIndex;
-//            $timeout(function () {
-//                Places.queryNearby(
-//                    {center: points[i], radius: Math.max(minRadius, dist)},
-//                    $scope.keyword,
-//                    []
-//                ).then(onPlaceFetch);
-//            }, 500);
-//        }
-//    };
-//
-//    Places.queryNearby(
-//        {center: points[currentIndex], radius: minRadius},
-//        $scope.keyword,
-//        []
-//    ).then(onPlaceFetch);
-
 
     $scope.close = function () {
         $scope.$modal.hide({canceled: true});

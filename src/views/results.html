@@ -1,0 +1,9 @@
+<div>
+  <ul>
+    <li ng-repeat="r in cachedResults"><strong>{{ r.name }}</strong> {{ r.vicinity }}}</li>
+  </ul>
+</div>
+<modal name="placesSearchModal"
+       template-url="'views/places-search-modal.html'"
+       adapter="bootstrapAdapter"
+       controlled-by="placesSearchModalController"></modal>
