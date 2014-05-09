@@ -1,9 +1,27 @@
-<h1>PoDrodze.net</h1>
-<h2>Jedziesz gdzieś? Znajdź ciekawe miejsca po drodze!</h2>
-
-<hr>
-  <div>{{ route.start }}</div>
-  <div>{{ route.stop }}</div>
-<hr>
-
-Configure search params...
+<div ng-controller="selectSearchParamsController">
+  <div>
+  From: <strong>{{ mainRoute.start.place.formatted_address }}</strong>
+  To: <strong>{{ mainRoute.stop.place.formatted_address }}</strong>
+  ({{ mainRoute.distance > 1000 ? mainRoute.distance/1000 + ' km' : mainRoute.distance + ' m' }})
+  </div>
+  <div>
+    <form ng-controller="selectVenuesForm">
+      <div>
+        <input type="checkbox" id="parks">
+        <label for="parks">Parki i miejsca rekreacji</label>
+      </div>
+      <div>
+        <input type="checkbox" id="hotels">
+        <label for="hotels">Hotele, hostele i kempingi</label>
+      </div>
+      <div>
+        <input type="checkbox" id="food">
+        <label for="food">Restauracje i bary</label>
+      </div>
+      <div>
+        <input type="checkbox" id="museums">
+        <label for="museums">Restauracje i bary</label>
+      </div>
+    </form>
+  </div>
+</div>

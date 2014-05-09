@@ -1,5 +1,5 @@
-<google-map center="map.center" zoom="map.zoom">
+<google-map center="map.center" zoom="map.zoom" bounds="map.bounds">
   <polyline
-            ng-if="mainRoutePolyline.path.length > 0"
-            path="mainRoutePolyline.path" stroke="{weight: 6, color: '#ff69b4'}"></polyline>
+            ng-if="mainRoute.path.length > 1"
+            path="mainRoute.path" stroke="{weight: 4, color: '#ff69b4'}"></polyline>
 </google-map>

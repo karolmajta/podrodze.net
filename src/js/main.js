@@ -4,7 +4,6 @@
 angular.module('podrodze', [
     'google-maps',
     'karolmajta.anydialog', 'karolmajta.anydialog.adapters.bootstrap',
-    'podrodze.routes',
     'podrodze.config',
     'podrodze.views',
     'podrodze.utils',
@@ -20,15 +19,25 @@ angular.module('podrodze', [
         zoom: 8
     };
 
-    $rootScope.mainRoutePolyline = {
+    $rootScope.cachedMainPathQueryResult = null;
+
+    $rootScope.mainRoute = {
         path: []
     };
 
 }])
 
+.controller('uiController', ['$scope', function ($scope) {
+    $scope.searchboxes = true;
+    $scope.queryboxes = $scope.mainRoute.path.length > 0;
+    $scope.$watch('cachedMainPathQueryResult', function (is, was) {
+        if (is) { $scope.queryboxes = true; }
+    });
+}])
+
 .controller('findRouteController',
-    ['$scope', '$location', 'cachedRoute',
-    function ($scope, $location, cachedRoute) {
+    ['$rootScope', '$scope',
+    function ($rootScope, $scope) {
 
     $scope.selected = {
         start: null,
@@ -53,15 +62,15 @@ angular.module('podrodze', [
             }
         };
         $scope.$directionSearchModal.show(directionParams).result.then(function (res) {
-            var next = res.directions.routes.next > 1 ? '/routes' : 'route';
-            cachedRoute.set(res);
-            $location.path(next);
+            if (res.directions) {
+                $rootScope.cachedMainPathQueryResult = res;
+            }
         });
     };
 }])
 
-.controller('startStopFormController', ['$scope', '$timeout', 'ThrottledAutocompleteSuggestions', 'getIn',
-function ($scope, $timeout, Autocomplete, getIn) {
+.controller('startStopFormController', ['$scope', '$timeout', 'ThrottledAutocompleteSuggestions',
+function ($scope, $timeout, Autocomplete) {
 
     var autocomplete = new Autocomplete(300);
 
@@ -162,21 +171,45 @@ function ($scope, $timeout, Autocomplete, getIn) {
 
 .controller('selectSearchParamsController',
     ['$scope', '$rootScope', 'cachedRoute', '$location',
-    function ($scope, $rootScope, cachedRoute, $location) {
+    function ($scope, $rootScope) {
 
-    console.log(cachedRoute.get());
-    var route = cachedRoute.get();
-    if(route === null) {
-        $location.path('/');
-    } else if (route.directions.routes.length > 1) {
-        $location.path('/routes');
-    } else {
+    var drawPath = function () {
+        var route = $scope.cachedMainPathQueryResult;
         $scope.route = route;
-        $rootScope.mainRoutePolyline.path = _.map(route.directions.routes[0].overview_path, function (ll) {
+        if (!route.directions) { return; }
+        $rootScope.mainRoute.path = _.map(route.directions.routes[0].overview_path, function (ll) {
             return { latitude: ll.lat(), longitude: ll.lng() };
         });
-        console.log($rootScope.mainRoutePolyline.path);
-    }
+        $rootScope.mainRoute.start = route.start;
+        $rootScope.mainRoute.stop = route.stop;
+        $rootScope.mainRoute.distance = _.reduce(route.directions.routes[0].legs, function (memo, l) {
+            return memo + l.distance.value;
+        }, 0);
+        var path = $rootScope.mainRoute.path;
+        var vectorPointSum = _.reduce(path, function (memo, p) {
+            return {latitude: memo.latitude + p.latitude, longitude: memo.longitude + p.longitude};
+        }, {latitude: 0, longitude: 0});
+        $rootScope.map.center = {
+            latitude: vectorPointSum.latitude / path.length,
+            longitude: vectorPointSum.longitude / path.length
+        };
+        var ne = route.directions.routes[0].bounds.getNorthEast();
+        var se = route.directions.routes[0].bounds.getSouthWest();
+        $rootScope.map.bounds = {
+            northeast: { latitude: ne.lat(), longitude: ne.lng() },
+            southwest: { latitude: se.lat(), longitude: se.lng() }
+        };
+    };
+
+    $scope.$watch('cachedMainPathQueryResult', function () {
+        drawPath();
+    });
+
+}])
+
+.controller('selectVenuesForm', ['$scope', function ($scope) {
+
+
 }]);
 
 })(window.angular);

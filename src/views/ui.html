@@ -1,0 +1,12 @@
+<h1>PoDrodze.net</h1>
+<h2>Jedziesz gdzieś? Znajdź ciekawe miejsca po drodze!</h2>
+
+<div ng-if="searchboxes">
+  <hr>
+  <ng-include src="'views/find-route.html'"></ng-include>
+</div>
+
+<div ng-if="queryboxes">
+  <hr>
+  <ng-include src="'views/search-params.html'"></ng-include>
+</div>

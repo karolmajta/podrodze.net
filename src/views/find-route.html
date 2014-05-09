@@ -1,58 +1,56 @@
-<h1>PoDrodze.net</h1>
-<h2>Jedziesz gdzieś? Znajdź ciekawe miejsca po drodze!</h2>
+<div ng-controller="findRouteController">
 
-<hr>
+  <form role="form" name="startStopForm" ng-controller="startStopFormController"
+        ng-submit="findRoute(); hideSuggested('start'); hideSuggested('stop');">
 
-<form role="form" name="startStopForm" ng-controller="startStopFormController" ng-submit="findRoute()">
-
-  <div class="form-group">
-    <label for="start">Początek podróży</label>
-    <input type="text" class="form-control" id="start" placeholder="Początek podróży"
-           name="start"
-           tabindex="1"
-           ng-model="searchParams.start"
-           ng-change="onFieldChange('start')"
-           ng-focus="hideSuggested('stop')"
-           required>
-    <div ng-show="showSuggestion.start">
-      [<a href ng-click="hideSuggested('start')">x</a>]
-      <ul>
-        <li ng-repeat="suggestion in suggested.start">
-          <a href ng-click="select(suggestion, 'start')">
-            {{ suggestion.description }}
-          </a>
-        </li>
-      </ul>
+    <div class="form-group">
+      <label for="start">Początek podróży</label>
+      <input type="text" class="form-control" id="start" placeholder="Początek podróży"
+             name="start"
+             tabindex="1"
+             ng-model="searchParams.start"
+             ng-change="onFieldChange('start')"
+             ng-focus="hideSuggested('stop')"
+             required>
+      <div ng-show="showSuggestion.start">
+        [<a href ng-click="hideSuggested('start')">x</a>]
+        <ul>
+          <li ng-repeat="suggestion in suggested.start">
+            <a href ng-click="select(suggestion, 'start')">
+              {{ suggestion.description }}
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label for="start">Koniec podróży</label>
-    <input type="text" class="form-control" id="stop" placeholder="Koniec podróży"
-           name="stop"
-           tabindex="1"
-           ng-model="searchParams.stop"
-           ng-change="onFieldChange('stop')"
-           ng-focus="hideSuggested('start')"
-           required>
-    <div ng-show="showSuggestion.stop">
-      [<a href ng-click="hideSuggested('stop')">x</a>]
-      <ul>
-        <li ng-repeat="suggestion in suggested.stop">
-          <a href ng-click="select(suggestion, 'stop')">
-            {{ suggestion.description }}
-          </a>
-        </li>
-      </ul>
+    <div class="form-group">
+      <label for="start">Koniec podróży</label>
+      <input type="text" class="form-control" id="stop" placeholder="Koniec podróży"
+             name="stop"
+             tabindex="1"
+             ng-model="searchParams.stop"
+             ng-change="onFieldChange('stop')"
+             ng-focus="hideSuggested('start')"
+             required>
+      <div ng-show="showSuggestion.stop">
+        [<a href ng-click="hideSuggested('stop')">x</a>]
+        <ul>
+          <li ng-repeat="suggestion in suggested.stop">
+            <a href ng-click="select(suggestion, 'stop')">
+              {{ suggestion.description }}
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
 
-  <button type="submit" tabindex="1" class="btn btn-default"
-          ng-disabled="startStopForm.$invalid"
-          ng-focus="hideSuggested('start'); hideSuggested('stop');">Submit</button>
+    <button type="submit" tabindex="1" class="btn btn-default"
+            ng-disabled="startStopForm.$invalid"
+            ng-focus="hideSuggested('start'); hideSuggested('stop');">Submit</button>
 
-</form>
-
+  </form>
+</div>
 <modal name="directionSearchModal"
        template-url="'views/direction-search-modal.html'"
        adapter="bootstrapAdapter"
