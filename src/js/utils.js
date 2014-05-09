@@ -10,6 +10,12 @@ angular.module('podrodze.utils', [])
                      undefined : currentObj[k];
     });
     return currentObj;
-});
+})
+
+.service('cachedRoute', [function () {
+    var c = null;
+    this.set = function (v) { c = v; };
+    this.get = function () { return c; };
+}]);
 
 })(window.angular);

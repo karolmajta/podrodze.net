@@ -10,9 +10,9 @@ angular.module('podrodze', [
     'podrodze.utils',
     'podrodze.places'])
 
-.controller('appController', ['$scope', function ($scope) {
+.controller('appController', ['$rootScope', function ($rootScope) {
 
-    $scope.map = {
+    $rootScope.map = {
         center: {
             latitude: 45,
             longitude: -73
@@ -20,9 +20,15 @@ angular.module('podrodze', [
         zoom: 8
     };
 
+    $rootScope.mainRoutePolyline = {
+        path: []
+    };
+
 }])
 
-.controller('findRouteController', ['$scope', function ($scope) {
+.controller('findRouteController',
+    ['$scope', '$location', 'cachedRoute',
+    function ($scope, $location, cachedRoute) {
 
     $scope.selected = {
         start: null,
@@ -47,7 +53,9 @@ angular.module('podrodze', [
             }
         };
         $scope.$directionSearchModal.show(directionParams).result.then(function (res) {
-            console.log(res);
+            var next = res.directions.routes.next > 1 ? '/routes' : 'route';
+            cachedRoute.set(res);
+            $location.path(next);
         });
     };
 }])
@@ -123,15 +131,25 @@ function ($scope, $timeout, Autocomplete, getIn) {
     }
 
     $q.all([fetchedPlaces.start, fetchedPlaces.stop]).then(function (ends) {
+        var start = ends[0];
+        var stop = ends[1];
         var startLoc = ends[0].geometry.location;
         var stopLoc = ends[1].geometry.location;
         Directions.query(startLoc, stopLoc).then(function (res) {
             if ($scope.$modal) {
-                $scope.$modal.hide({start: startLoc, stop: stopLoc, directions: res});
+                $scope.$modal.hide({
+                    start: {location: startLoc, place: start},
+                    stop: {location: stopLoc, place: stop},
+                    directions: res
+                });
             } else {
                 $scope.$watch('$modal', function () {
                     if ($scope.$modal) {
-                        $scope.$modal.hide({start: startLoc, stop: stopLoc, directions: res});
+                        $scope.$modal.hide({
+                            start: {location: startLoc, place: start},
+                            stop: {location: stopLoc, place: stop},
+                            directions: res
+                        });
                     }
                 });
             }
@@ -142,8 +160,23 @@ function ($scope, $timeout, Autocomplete, getIn) {
     $scope.close = function () { $scope.$modal.hide({cancelled: true}); };
 }])
 
-.controller('mapController', ['$scope', function ($scope) {
+.controller('selectSearchParamsController',
+    ['$scope', '$rootScope', 'cachedRoute', '$location',
+    function ($scope, $rootScope, cachedRoute, $location) {
 
+    console.log(cachedRoute.get());
+    var route = cachedRoute.get();
+    if(route === null) {
+        $location.path('/');
+    } else if (route.directions.routes.length > 1) {
+        $location.path('/routes');
+    } else {
+        $scope.route = route;
+        $rootScope.mainRoutePolyline.path = _.map(route.directions.routes[0].overview_path, function (ll) {
+            return { latitude: ll.lat(), longitude: ll.lng() };
+        });
+        console.log($rootScope.mainRoutePolyline.path);
+    }
 }]);
 
 })(window.angular);

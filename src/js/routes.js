@@ -8,6 +8,9 @@ angular.module('podrodze.routes', ['ngRoute'])
    $routeProvider.when('/', {
        templateUrl: 'views/find-route.html',
        controller: 'findRouteController'
+   }).when('/route', {
+       templateUrl: 'views/search-params.html',
+       controller: 'selectSearchParamsController'
    });
 }]);
 
