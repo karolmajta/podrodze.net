@@ -3,7 +3,7 @@
 
 angular.module('podrodze.places.directions', ['ngResource', '$googleMapsLibrary'])
 
-    .service('Places', ['$q', '$places', function ($q, $places) {
+    .service('Places', ['$q', '$places', '$maps', function ($q, $places, $maps) {
 
         var places = new $places.PlacesService(angular.element('<div></div>')[0]);
 
@@ -20,6 +20,18 @@ angular.module('podrodze.places.directions', ['ngResource', '$googleMapsLibrary'
             places.textSearch({query: name}, function (res) {
                 res ? d.resolve(res) : d.reject(res);
             });
+            return d.promise;
+        };
+
+        this.queryNearby = function (area, keyword, venues) {
+            var request = {
+                location: new $maps.LatLng(area.center.latitude, area.center.longitude),
+                radius: area.radius,
+                types: venues,
+                keyword: keyword
+            };
+            var d = $q.defer();
+            places.nearbySearch(request, function (res) { d.resolve(res); });
             return d.promise;
         };
     }])

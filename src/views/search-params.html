@@ -5,23 +5,20 @@
   ({{ mainRoute.distance > 1000 ? mainRoute.distance/1000 + ' km' : mainRoute.distance + ' m' }})
   </div>
   <div>
-    <form ng-controller="selectVenuesForm">
-      <div>
-        <input type="checkbox" id="parks">
-        <label for="parks">Parki i miejsca rekreacji</label>
+    <form name="selectVenuesForm"
+          ng-submit="findPlaces()"
+          ng-controller="selectVenuesFormController">
+      <div class="form-group">
+        <input type="text" id="keywords" class="form-control" placeholder="słowa kluczowe"
+               ng-model="keyword">
       </div>
-      <div>
-        <input type="checkbox" id="hotels">
-        <label for="hotels">Hotele, hostele i kempingi</label>
-      </div>
-      <div>
-        <input type="checkbox" id="food">
-        <label for="food">Restauracje i bary</label>
-      </div>
-      <div>
-        <input type="checkbox" id="museums">
-        <label for="museums">Restauracje i bary</label>
+      <div class="form-group">
+        <button type="submit" class="btn btn-default">Submit</button>
       </div>
     </form>
   </div>
 </div>
+<modal name="placesSearchModal"
+       template-url="'views/places-search-modal.html'"
+       adapter="bootstrapAdapter"
+       controlled-by="placesSearchModalController"></modal>

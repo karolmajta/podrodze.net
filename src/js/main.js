@@ -166,7 +166,7 @@ function ($scope, $timeout, Autocomplete) {
     }, handleFailure);
 
 
-    $scope.close = function () { $scope.$modal.hide({cancelled: true}); };
+    $scope.close = function () { $scope.$modal.hide({canceled: true}); };
 }])
 
 .controller('selectSearchParamsController',
@@ -207,9 +207,132 @@ function ($scope, $timeout, Autocomplete) {
 
 }])
 
-.controller('selectVenuesForm', ['$scope', function ($scope) {
+.controller('selectVenuesFormController', ['$scope', function ($scope) {
+
+    $scope.venues = {
+        parks: true,
+        hotels: true,
+        food: true,
+        museums: true
+    };
+
+    $scope.findPlaces = function () {
+        $scope.$placesSearchModal.show({
+            points: $scope.mainRoute.path,
+            distance: $scope.mainRoute.distance,
+            keyword: $scope.keyword
+        }).result.then(function (res) {
+            console.log(res);
+        });
+    };
+
+}])
+
+.controller('placesSearchModalController',
+    ['$scope', '$timeout', '$q', 'Places',
+    function ($scope, $timeout, $q, Places) {
+
+    var mindist = $scope.distance / 20;
+    var minRadius = mindist*2;
+
+    var queriedPoints = [{center: $scope.points[0], radius: minRadius}];
+    var anchorPoint = $scope.points[0];
+    for(var i = 1; i < $scope.points.length; i++) {
+        var currPoint = $scope.points[i-1];
+        // haversine formula copypasta
+        var R = 6371; // km
+        var f1 = anchorPoint.latitude/180 * Math.PI;
+        var f2 = currPoint.latitude/180 * Math.PI;
+        var df = f2 - f1;
+        var dl = (currPoint.longitude - anchorPoint.longitude)/180 * Math.PI;
+
+        var a = Math.sin(df/2) * Math.sin(df/2) +
+            Math.cos(f1) * Math.cos(f2) *
+            Math.sin(dl/2) * Math.sin(dl/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        var dist = R * 1000 * c;
+        // end haversine copypasta
+        if (dist > mindist) {
+            anchorPoint = currPoint;
+            queriedPoints.push({center: currPoint, radius: Math.max(dist, minRadius)});
+        }
+    }
+
+    var responsePromises = [];
+    var allQueried = $q.defer();
+    $scope.currentIdx = 1;
+    $scope.totalLen = queriedPoints.length;
+    var queryPoint = function (idx) {
+        if (idx >= queriedPoints.length) {
+            allQueried.resolve(responsePromises);
+        } else {
+            $timeout(function () {
+                var p = Places.queryNearby(
+                    queriedPoints[idx],
+                    $scope.keyword,
+                    []
+                );
+                responsePromises.unshift(p);
+                p.then(function () { $scope.currentIdx++; queryPoint(idx+1); });
+            }, 400);
+        }
+        return allQueried.promise;
+    };
+
+    queryPoint(0).then(function (allQueried) {
+        var allFetched = $q.all(allQueried);
+        allFetched.then(function (r) {
+            var res = {};
+            _.each(r, function (arr) {
+                _.each(arr, function (item) {
+                    res[item.id] = item;
+                });
+            });
+            $scope.$modal.hide({places: res});
+        });
+    });
+
+//    var onPlaceFetch = function (res) {
+//        if(res && res.length > 0) {
+//            results.push(res);
+//        }
+//        currentIndex++;
+//        currPoint = points[currentIndex];
+//
+//        if(!currPoint) {
+//            console.log(results);
+//            return $q.when([]);
+//        }
+//
+//
+//
+//        if (dist < mindist) {
+//            $q.when([]).then(onPlaceFetch);
+//        }
+//        if (points[currentIndex]) {
+//            anchorPoint = currPoint;
+//            var i = currentIndex;
+//            $timeout(function () {
+//                Places.queryNearby(
+//                    {center: points[i], radius: Math.max(minRadius, dist)},
+//                    $scope.keyword,
+//                    []
+//                ).then(onPlaceFetch);
+//            }, 500);
+//        }
+//    };
+//
+//    Places.queryNearby(
+//        {center: points[currentIndex], radius: minRadius},
+//        $scope.keyword,
+//        []
+//    ).then(onPlaceFetch);
 
 
+    $scope.close = function () {
+        $scope.$modal.hide({canceled: true});
+    };
 }]);
 
 })(window.angular);
