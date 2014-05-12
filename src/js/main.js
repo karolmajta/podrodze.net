@@ -20,7 +20,7 @@ angular.module('podrodze', [
     };
 
     $rootScope.cachedMainPathQueryResult = null;
-    $rootScope.cachedResults = null;
+    $rootScope.cachedResults = [];
 
     $rootScope.mainRoute = {
         path: []
@@ -36,7 +36,7 @@ angular.module('podrodze', [
         if (is) { $scope.queryboxes = true; }
     });
     $scope.$watch('cachedResults', function (is, was) {
-        if (is) { $scope.results = Boolean($scope.cachedResults); }
+        if (is) { $scope.results = Boolean($scope.cachedResults.length > 0); }
     });
 }])
 
@@ -69,6 +69,8 @@ angular.module('podrodze', [
         $scope.$directionSearchModal.show(directionParams).result.then(function (res) {
             if (res.directions) {
                 $rootScope.cachedMainPathQueryResult = res;
+                $rootScope.cachedResults = [];
+                console.log($rootScope.cachedResults);
             }
         });
     };
@@ -228,7 +230,12 @@ function ($scope, $timeout, Autocomplete) {
             distance: $scope.mainRoute.distance,
             keyword: $scope.keyword
         }).result.then(function (res) {
-            $rootScope.cachedResults = _.values(res.places);
+            $rootScope.cachedResults = _.values(res.places).map(function (p) {
+                return _.extend({}, p, {
+                    latitude: p.geometry.location.lat(),
+                    longitude: p.geometry.location.lng()
+                });
+            });
         });
     };
 
@@ -238,8 +245,8 @@ function ($scope, $timeout, Autocomplete) {
     ['$scope', '$timeout', '$q', 'Places',
     function ($scope, $timeout, $q, Places) {
 
-    var mindist = $scope.distance / 20;
-    var minRadius = mindist*2;
+    var mindist = $scope.distance / 30;
+    var minRadius = mindist;
 
     var queriedPoints = [{center: $scope.points[0], radius: minRadius}];
     var anchorPoint = $scope.points[0];
@@ -281,7 +288,7 @@ function ($scope, $timeout, Autocomplete) {
                 );
                 responsePromises.unshift(p);
                 p.then(function () { $scope.currentIdx++; queryPoint(idx+1); });
-            }, 400);
+            }, 150);
         }
         return allQueried.promise;
     };
