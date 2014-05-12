@@ -70,7 +70,6 @@ angular.module('podrodze', [
             if (res.directions) {
                 $rootScope.cachedMainPathQueryResult = res;
                 $rootScope.cachedResults = [];
-                console.log($rootScope.cachedResults);
             }
         });
     };
