@@ -125,6 +125,14 @@ module.exports = function(grunt) {
             index: {
                 src: 'src/index.html',
                 dest: 'dist/index.html'
+            },
+            images: {
+                files: [
+                    {expand: true,
+                     cwd: 'src/images/',
+                     src: ['**'],
+                     dest: 'dist/images/'},
+                ]
             }
         },
         less: {
