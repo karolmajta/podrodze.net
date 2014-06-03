@@ -2,11 +2,50 @@
 
 html, body, .pd-page, .pd-container, .pd-map {
   height: 100%;
+  color: @pd-text-grey;
+  font-family: "Lato Light", "Helvetica", sans-serif;
 }
 
 .pd-ui {
-  padding-left: @pd-ui-gutter-width/2;
-  padding-right: @pd-ui-gutter-width/2;
+  padding-left: @pd-ui-gutter-width;
+  padding-right: @pd-ui-gutter-width;
   height: 100%;
   overflow-y: auto;
+}
+
+.pd-ui h1 {
+	text-align: center;
+}
+.pd-ui h2 {
+	text-align: center;
+	font-size: @base-size1;
+}
+.pd-input {
+	padding-left: @base-size5;
+	height: @base-size5;
+	box-shadow: none;
+	background: @base-size-1 center no-repeat;
+	background-size: 1.86em 2.25em;
+	border-radius: 0;
+	border: 1px solid @pd-border-grey;
+}
+#start {
+	background-image: url('/images/pd-input-icon-a.svg');
+}
+#stop {
+	background-image: url('/images/pd-input-icon-b.svg');
+}
+.btn-pd-ui {
+	background-color: @pd-brand-color;
+	color: white;
+
+	&:hover {
+		background-color: darken(@pd-brand-color, 5%);
+		color: white;
+	}
+
+	&:disabled {
+		background-color: darken(white, 5%);
+		color: darken(white, 40%);
+	}
 }
