@@ -5,7 +5,7 @@
 
     <div class="form-group">
       <label for="start">Początek podróży</label>
-      <input type="text" class="form-control" id="start" placeholder="Początek podróży"
+      <input type="text" class="form-control pd-input" id="start" placeholder="Początek podróży"
              name="start"
              tabindex="1"
              ng-model="searchParams.start"
@@ -26,7 +26,7 @@
 
     <div class="form-group">
       <label for="start">Koniec podróży</label>
-      <input type="text" class="form-control" id="stop" placeholder="Koniec podróży"
+      <input type="text" class="form-control pd-input" id="stop" placeholder="Koniec podróży"
              name="stop"
              tabindex="1"
              ng-model="searchParams.stop"
@@ -45,9 +45,9 @@
       </div>
     </div>
 
-    <button type="submit" tabindex="1" class="btn btn-default"
+    <button type="submit" tabindex="1" class="btn btn-pd-ui" 
             ng-disabled="startStopForm.$invalid"
-            ng-focus="hideSuggested('start'); hideSuggested('stop');">Submit</button>
+            ng-focus="hideSuggested('start'); hideSuggested('stop');">Wyznacz trasę</button>
 
   </form>
 </div>
