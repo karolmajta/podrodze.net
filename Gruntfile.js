@@ -202,6 +202,15 @@ module.exports = function(grunt) {
                         dest: '<%= pkg.version %>/css/'
                     }
                 ]
+            },
+            images: {
+                upload: [
+                    {
+                        src: 'dist/images/*',
+                        dest: 'images/'
+                    }
+
+                ]
             }
         },
         clean: [
@@ -248,10 +257,10 @@ module.exports = function(grunt) {
     grunt.registerTask('dist', [
         'useminPrepare',
         'concat:generated', 'cssmin:generated', 'uglify:generated',
-        'copy:index',
+        'copy:index', 'copy:images',
         'usemin']);
 
-    var deployTasks = ['clean', 'build', 'dist', 's3:index', 's3:app'];
+    var deployTasks = ['clean', 'build', 'dist', 's3:index', 's3:app', 's3:images'];
     if (!deployEnvironmentValid()) {
         errmsg = "Missing envvars [" + missingKeys(process.env, REQUIRED_DEPLOY_ENVVARS) + "].";
         failmsg = "fail:" + errmsg + ":7";
