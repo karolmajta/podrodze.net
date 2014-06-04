@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="29px" height="35px" viewBox="0 0 29 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <title>pd-input-icon-crosshair</title>
+    <description>Created with Sketch (http://www.bohemiancoding.com/sketch)</description>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="pd-input-icon-a" sketch:type="MSLayerGroup" transform="translate(-46.000000, -220.000000)"></g>
+        <path d="M14.5,0 C6.49178338,0 0,6.40865291 0,14.3143204 C0,22.342233 7.05035608,27.6375121 14.5,35 C21.9496439,27.6375121 29,22.342233 29,14.3143204 C29,6.40865291 22.5082166,0 14.5,0 L14.5,0 Z M16.2208241,24 L16.2208241,19.1084254 L12.7790898,19.1084254 L12.7790898,24 C8.2877126,23.2691641 4.74091935,19.7254017 4.00447425,15.2349607 L8.90645038,15.2349607 L8.90645038,11.792493 L4,11.792493 C4.72637803,7.28897058 8.27850596,3.73238502 12.7790898,3 L12.7790898,7.91902824 L16.2208241,7.91902824 L16.2208241,3 C20.721494,3.73238502 24.273622,7.28897058 25,11.792493 L20.0934636,11.792493 L20.0934636,15.2349607 L24.9955257,15.2349607 C24.2590806,19.7254017 20.7122874,23.2691641 16.2208241,24 L16.2208241,24 Z" id="crosshair-9-icon" fill="#A4C6FD" sketch:type="MSShapeGroup"></path>
+    </g>
+</svg>
