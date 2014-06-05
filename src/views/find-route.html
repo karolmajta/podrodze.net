@@ -13,7 +13,7 @@
              ng-focus="hideSuggested('stop')"
              required>
       <div ng-show="showSuggestion.start">
-        [<a href ng-click="hideSuggested('start')">x</a>]
+        <a class="pd-hide" href ng-click="hideSuggested('start')">x</a>
         <ul>
           <li ng-repeat="suggestion in suggested.start">
             <a href ng-click="select(suggestion, 'start')">
@@ -34,7 +34,7 @@
              ng-focus="hideSuggested('start')"
              required>
       <div ng-show="showSuggestion.stop">
-        [<a href ng-click="hideSuggested('stop')">x</a>]
+        <a class="pd-hide" href ng-click="hideSuggested('stop')">x</a>
         <ul>
           <li ng-repeat="suggestion in suggested.stop">
             <a href ng-click="select(suggestion, 'stop')">
