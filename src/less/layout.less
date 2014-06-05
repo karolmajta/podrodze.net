@@ -5,14 +5,12 @@ html, body, .pd-page, .pd-container, .pd-map {
   color: @pd-text-grey;
   font-family: "Lato Light", "Helvetica", sans-serif;
 }
-
 .pd-ui {
   padding-left: @pd-ui-gutter-width;
   padding-right: @pd-ui-gutter-width;
   height: 100%;
   overflow-y: auto;
 }
-
 .pd-ui h1 {
 	text-align: center;
 }
@@ -28,6 +26,11 @@ html, body, .pd-page, .pd-container, .pd-map {
 	background-size: 1.86em 2.25em;
 	border-radius: 0;
 	border: 1px solid @pd-border-grey;
+
+	&:focus {
+		box-shadow: none;
+		border: 1px solid @pd-brand-color;
+	}
 }
 #start {
 	background-image: url('/images/pd-input-icon-a.svg');
@@ -35,9 +38,14 @@ html, body, .pd-page, .pd-container, .pd-map {
 #stop {
 	background-image: url('/images/pd-input-icon-b.svg');
 }
+#keywords {
+	background-image: url('/images/pd-input-icon-crosshair.svg');
+}
 .btn-pd-ui {
+	width: @base-size8;
 	background-color: @pd-brand-color;
 	color: white;
+	border-radius: 0;
 
 	&:hover {
 		background-color: darken(@pd-brand-color, 5%);
@@ -47,5 +55,43 @@ html, body, .pd-page, .pd-container, .pd-map {
 	&:disabled {
 		background-color: darken(white, 5%);
 		color: darken(white, 40%);
+	}
+}
+.form-group {
+	.pd-hide {
+		position:  absolute;
+		display: inline-block;
+		width: @base-size5;
+		margin-top: -(@base-size5);
+		right: @pd-ui-gutter-width;
+		line-height: @base-size5 - 0.5px;
+		vertical-align: middle;
+		text-decoration: none;
+		text-align: center;
+		color: @pd-text-grey;
+		border-left: 1px solid @pd-border-grey;
+	}
+
+	ul {
+		list-style-type: none;
+		padding: 0;
+		border: 1px solid @pd-border-grey;
+
+		li {
+			text-indent: @base-size5;
+			line-height: @base-size5;
+			cursor: pointer;
+
+			&:hover {
+				background-color: darken(white,5%);
+			}
+
+			a {
+				display: block;
+				width: 100%;
+				height: 100%;
+				text-decoration: none;
+			}
+		}
 	}
 }
