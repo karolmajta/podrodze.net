@@ -81,6 +81,7 @@ html, body, .pd-page, .pd-container, .pd-map {
 			text-indent: @base-size5;
 			line-height: @base-size5;
 			cursor: pointer;
+			background-color: white;
 
 			&:hover {
 				background-color: darken(white,5%);
@@ -97,4 +98,19 @@ html, body, .pd-page, .pd-container, .pd-map {
 			}
 		}
 	}
+}
+.pd-results {
+	list-style-type: none;
+	padding-left: 0;
+	
+	li {
+		padding: @base-size1 0 @base-size1 @base-size5;
+		line-height: @base-size2;
+		background: url('/images/pd-result-icon.svg') @base-size-1 center no-repeat;
+		background-size: 1.86em 2.25em;
+	}
+
+	li:nth-of-type(odd) {
+		background-color: lighten(@pd-brand-color, 55%)
+	} 
 }
