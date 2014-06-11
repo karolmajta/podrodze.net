@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="29px" height="35px" viewBox="0 0 29 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <title>pd-input-icon-b 1 1 1</title>
+    <description>Created with Sketch (http://www.bohemiancoding.com/sketch)</description>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="pd-result-icon" sketch:type="MSLayerGroup" transform="translate(-0.400000, 0.000000)">
+            <path d="M14.8428398,0 C6.83462319,0 0.342839806,6.40873786 0.342839806,14.3143204 C0.342839806,22.342233 7.39319589,27.6375121 14.8428398,35 C22.2924837,27.6375121 29.3428398,22.342233 29.3428398,14.3143204 C29.3428398,6.40873786 22.8510564,0 14.8428398,0 L14.8428398,0 Z M14.8428398,24.3775 C8.96754307,24.3775 4.20448669,19.6755218 4.20448669,13.8754612 C4.20448669,8.07531553 8.96754307,3.37342233 14.8428398,3.37342233 C20.7183086,3.37342233 25.4811929,8.07531553 25.4811929,13.8754612 C25.4811929,19.6755218 20.7183086,24.3775 14.8428398,24.3775 L14.8428398,24.3775 Z" id="location-12-icon" fill="#A4C6FD" sketch:type="MSShapeGroup"></path>
+            <path d="M14.9288932,6.63411408 L17.0710208,10.9964563 L21.9355342,11.6595024 L18.3947805,15.0187379 L19.259273,19.7908859 L14.9288932,17.5045874 L10.5985994,19.790801 L11.463092,15.0186529 L7.92233832,11.6594175 L12.7868517,10.9963714 L14.9288932,6.63411408 L14.9288932,6.63411408 Z" id="Path" fill="#666666" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>
