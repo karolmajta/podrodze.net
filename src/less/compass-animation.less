@@ -1,0 +1,78 @@
+.transform(@string){
+	-webkit-transform: @string;
+	-moz-transform: 	 @string;
+	-ms-transform: 		 @string;
+	-o-transform: 		 @string;
+}
+
+.compass-loader {
+	margin: @base-size1 auto;
+	width: 100px;
+	height: 100px;
+	background: url('/images/pd-compass.svg') center no-repeat;
+	background-size: 100%;
+  -webkit-animation: compass 1s infinite; /* Safari 4+ */
+  -moz-animation:    compass 1s infinite; /* Fx 5+ */
+  -o-animation:      compass 1s infinite; /* Opera 12+ */
+  animation:         compass 1s infinite; /* IE 10+ */
+}
+
+@-webkit-keyframes compass {
+  0%, 100% {
+    .transform(rotate(0));
+  }
+  30% {
+    .transform(rotate(-100deg));
+  }
+  50% {
+    .transform(rotate(-55deg));
+  }
+  70% {
+    .transform(rotate(-100deg));
+  }
+}
+
+@-moz-keyframes compass {
+  0%, 100% {
+    .transform(rotate(0));
+  }
+  30% {
+    .transform(rotate(-100deg));
+  }
+  50% {
+    .transform(rotate(-55deg));
+  }
+  70% {
+    .transform(rotate(-100deg));
+  }
+}
+
+@-o-keyframes compass {
+  0%, 100% {
+    .transform(rotate(0));
+  }
+  30% {
+    .transform(rotate(-100deg));
+  }
+  50% {
+    .transform(rotate(-55deg));
+  }
+  70% {
+    .transform(rotate(-100deg));
+  }
+}
+
+@keyframes compass {
+  0%, 100% {
+    .transform(rotate(0));
+  }
+  30% {
+    .transform(rotate(-100deg));
+  }
+  50% {
+    .transform(rotate(-55deg));
+  }
+  70% {
+    .transform(rotate(-100deg));
+  }
+}
