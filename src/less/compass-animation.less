@@ -6,9 +6,10 @@
 }
 
 .compass-loader {
-	margin: @base-size1 auto;
-	width: 100px;
-	height: 100px;
+	margin: @base-size1 @base-size3 @base-size1 0;
+	float: right;
+	width: 75px;
+	height: 75px;
 	background: url('/images/pd-compass.svg') center no-repeat;
 	background-size: 100%;
   -webkit-animation: compass 1s infinite; /* Safari 4+ */
@@ -18,61 +19,73 @@
 }
 
 @-webkit-keyframes compass {
-  0%, 100% {
+  0% {
     .transform(rotate(0));
   }
-  30% {
+  20% {
     .transform(rotate(-100deg));
   }
-  50% {
+  40% {
     .transform(rotate(-55deg));
   }
-  70% {
+  60% {
     .transform(rotate(-100deg));
+  }
+  80% {
+  	.transform(rotate(-360deg));
   }
 }
 
 @-moz-keyframes compass {
-  0%, 100% {
+  0% {
     .transform(rotate(0));
   }
-  30% {
+  20% {
     .transform(rotate(-100deg));
   }
-  50% {
+  40% {
     .transform(rotate(-55deg));
   }
   70% {
     .transform(rotate(-100deg));
+  }
+  100% {
+  	.transform(rotate(-360deg));
   }
 }
 
 @-o-keyframes compass {
-  0%, 100% {
+  0% {
     .transform(rotate(0));
   }
-  30% {
+  20% {
     .transform(rotate(-100deg));
   }
-  50% {
+  40% {
     .transform(rotate(-55deg));
   }
-  70% {
+  60% {
     .transform(rotate(-100deg));
+  }
+  80% {
+  	.transform(rotate(-360deg));
   }
 }
 
 @keyframes compass {
-  0%, 100% {
+  0% {
     .transform(rotate(0));
   }
-  30% {
+  20% {
     .transform(rotate(-100deg));
   }
-  50% {
+  40% {
     .transform(rotate(-55deg));
   }
-  70% {
+  60% {
     .transform(rotate(-100deg));
+  }
+  80% {
+  	.transform(rotate(-360deg));
   }
 }
