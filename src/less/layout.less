@@ -10,6 +10,7 @@ html, body, .pd-page, .pd-container, .pd-map {
   padding-right: @pd-ui-gutter-width;
   height: 100%;
   overflow-y: auto;
+  border-left: 1px solid @pd-border-grey;
 }
 .pd-ui h1 {
 	text-align: center;
@@ -113,4 +114,24 @@ html, body, .pd-page, .pd-container, .pd-map {
 	li:nth-of-type(odd) {
 		background-color: lighten(@pd-brand-color, 55%)
 	} 
+}
+.modal .pd-modal {
+	border-radius: 0;
+	box-shadow: none;
+
+	.modal-header {
+		text-align: center;
+	}
+
+	.modal-body {
+		height: @modal-body-height;
+	}
+}
+.places-loader, .modal-text {
+	display: inline-block;
+	float: left;
+	margin-left: @base-size5;
+	font-size: @base-size5;
+	line-height: @modal-body-text-line-height;
+	vertical-align: middle;
 }

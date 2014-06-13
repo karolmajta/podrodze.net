@@ -1,16 +1,16 @@
-<div class="modal fade">
+<div class="modal fade pd-modal">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content pd-modal">
       <div class="modal-header">
         <h4 class="modal-title">Please wait while we find available routes</h4>
       </div>
       <div class="modal-body">
         <div class="compass-loader"></div>
-        <div ng-show="!didFail">Loading...</div>
-        <div ng-show="didFail">Failed!</div>
+        <div ng-show="!didFail" class="modal-text">Loading...</div>
+        <div ng-show="didFail" class="modal-text">Failed!</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default"
+        <button type="button" class="btn btn-pd-ui"
                 ng-disabled="!$modal"
                 ng-click="close()">Cancel</button>
       </div>
